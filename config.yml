@@ -1,0 +1,7 @@
+tls:
+  cert: "/Users/nhn/Documents/cert.pem"
+  key: "/Users/nhn/Documents/key.pem"
+
+routes:
+  - path: /
+    target: http://localhost:8080
