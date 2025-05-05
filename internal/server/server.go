@@ -8,7 +8,6 @@ import (
 )
 
 func Start(cfg *config.Config) {
-	destination := cfg.Routes[0].Target
 	certPath, keyPath := cfg.Server.SSL.Cert, cfg.Server.SSL.Key
 	isHTTPS := certPath != "" && keyPath != ""
 
@@ -19,7 +18,7 @@ func Start(cfg *config.Config) {
 			return
 		}
 		log.Printf("[INFO] %s %s from %s", r.Method, r.URL.String(), r.RemoteAddr)
-		proxy.IndexPathHandler(w, r, destination)
+		proxy.Handle(w, r, cfg)
 	})
 
 	port := cfg.Server.Port

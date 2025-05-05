@@ -1,18 +1,39 @@
 package proxy
 
 import (
+	"GoProxy/config"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"strings"
 )
 
-func IndexPathHandler(w http.ResponseWriter, r *http.Request, dest string) {
-	proxyUrl, err := url.Parse(dest)
-	if err != nil {
-		log.Fatal(err)
+func Handle(w http.ResponseWriter, r *http.Request, cfg *config.Config) {
+	for _, route := range cfg.Routes {
+		if strings.HasPrefix(r.URL.Path, route.Path) {
+			proxyPath := strings.TrimPrefix(r.URL.Path, route.Path)
+			proxyUrl, err := url.Parse(route.Target)
+			if err != nil {
+				log.Printf("[ERROR] Failed to parse target URL %q: %v", route.Target, err)
+				http.Error(w, "Bad Gateway", http.StatusBadGateway)
+				return
+			}
+
+			proxy := httputil.NewSingleHostReverseProxy(proxyUrl)
+
+			originalDirector := proxy.Director
+			proxy.Director = func(req *http.Request) {
+				originalDirector(req)
+				req.URL.Path = proxyPath
+				req.URL.RawPath = proxyPath
+				req.Host = proxyUrl.Host
+			}
+
+			proxy.ServeHTTP(w, r)
+			return
+		}
 	}
 
-	proxy := httputil.NewSingleHostReverseProxy(proxyUrl)
-	proxy.ServeHTTP(w, r)
+	http.NotFound(w, r)
 }
