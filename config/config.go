@@ -9,6 +9,7 @@ type Config struct {
 	Server struct {
 		Port string `yaml:"port"`
 		SSL  struct {
+			Port string `yaml:"port"`
 			Cert string `yaml:"cert"`
 			Key  string `yaml:"key"`
 		} `yaml:"ssl"`

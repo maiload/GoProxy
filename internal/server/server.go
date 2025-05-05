@@ -8,8 +8,8 @@ import (
 )
 
 func Start(cfg *config.Config) {
-	certPath, keyPath := cfg.Server.SSL.Cert, cfg.Server.SSL.Key
-	isHTTPS := certPath != "" && keyPath != ""
+	sslPort, certPath, keyPath := cfg.Server.SSL.Port, cfg.Server.SSL.Cert, cfg.Server.SSL.Key
+	isHTTPS := sslPort != "" && certPath != "" && keyPath != ""
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.TLS == nil && isHTTPS {
@@ -21,12 +21,10 @@ func Start(cfg *config.Config) {
 		proxy.Handle(w, r, cfg)
 	})
 
-	port := cfg.Server.Port
-
 	if isHTTPS {
 		go func() {
-			log.Println("Starting HTTPS server on :" + port)
-			if err := http.ListenAndServeTLS(":"+port, certPath, keyPath, nil); err != nil {
+			log.Println("Starting HTTPS server on :" + sslPort)
+			if err := http.ListenAndServeTLS(":"+sslPort, certPath, keyPath, nil); err != nil {
 				log.Fatal("HTTPS Server Error:", err)
 			}
 		}()
@@ -34,12 +32,9 @@ func Start(cfg *config.Config) {
 		log.Println("The values for certPath and keyPath are empty.")
 	}
 
-	httpPort := port
-	if port == "443" {
-		httpPort = "80"
-	}
-	log.Println("Starting HTTP server on :" + httpPort)
-	if err := http.ListenAndServe(":"+httpPort, nil); err != nil {
+	port := cfg.Server.Port
+	log.Println("Starting HTTP server on :" + port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Fatal("HTTP Server Error:", err)
 	}
 }
