@@ -15,7 +15,7 @@
 #### **2. Generate Private Key (key.pem)**
 
   ```bash
-  openssl genpkey -algorithm RSA -out key.pem -aes256
+  openssl genpkey -algorithm RSA -out key.pem
   ```
 
 #### **3. Generate Certificate Signing Request (CSR)**
