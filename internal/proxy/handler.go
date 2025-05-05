@@ -13,6 +13,7 @@ func Handle(w http.ResponseWriter, r *http.Request, cfg *config.Config) {
 	for _, route := range cfg.Routes {
 		if strings.HasPrefix(r.URL.Path, route.Path) {
 			proxyPath := strings.TrimPrefix(r.URL.Path, route.Path)
+			if route.Path == "/" { proxyPath = r.URL.Path }
 			proxyUrl, err := url.Parse(route.Target)
 			if err != nil {
 				log.Printf("[ERROR] Failed to parse target URL %q: %v", route.Target, err)
