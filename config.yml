@@ -1,6 +1,8 @@
-tls:
-  cert: "/Users/nhn/Documents/cert.pem"
-  key: "/Users/nhn/Documents/key.pem"
+server:
+    port: 443
+    ssl:
+      cert:
+      key:
 
 routes:
   - path: /
