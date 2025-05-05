@@ -1,9 +1,10 @@
 server:
+  port: 80
+  ssl:
     port: 443
-    ssl:
-      cert:
-      key:
+    cert: /app/cert.pem
+    key: /app/key.pem
 
 routes:
-  - path: /
-    target: http://localhost:8080
+  - path: /api
+    target: http://host.docker.internal:8080
