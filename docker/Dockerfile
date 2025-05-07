@@ -1,6 +1,6 @@
 FROM golang:1.24 AS builder
 WORKDIR /app
-COPY . .
+COPY .. .
 RUN go build -o goProxy /app/cmd/server/main.go
 
 FROM debian:bookworm-slim

@@ -1,5 +1,7 @@
 .idea/
 
+ssl/
+
 .DS_Store
 
 *.iml
