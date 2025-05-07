@@ -6,5 +6,5 @@ server:
     key: /app/key.pem
 
 routes:
-  - path: /api
-    target: http://host.docker.internal:8080
+  - path: /
+    target: http://httpbin.org
