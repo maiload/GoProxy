@@ -13,7 +13,7 @@ func Start(cfg *config.Config) {
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.TLS == nil && isHTTPS {
-			http.Redirect(w, r, "https://"+r.Host+r.RequestURI, http.StatusMovedPermanently)
+			http.Redirect(w, r, "https://"+r.Host+r.RequestURI, http.StatusPermanentRedirect)
 			log.Printf("[INFO] %s %s from %s (Redirect)", r.Method, r.URL.String(), r.RemoteAddr)
 			return
 		}
