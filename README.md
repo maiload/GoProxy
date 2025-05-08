@@ -32,6 +32,12 @@
 
 ---
 
+## How to Write a Config.yml
+
+The HTTP server is executed based on the presence of the `server.port` value, while the HTTPS server is executed based on the presence of the three values in `server.ssl`
+
+---
+
 ## How to Run with Docker Compose
 
 ### Requirements
