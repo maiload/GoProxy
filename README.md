@@ -45,6 +45,7 @@ The HTTP server is executed based on the presence of the `server.port` value, wh
 - Docker
 - Docker Compose
 - cert.pem & key.pem
+- config.yml
 
 ### 1. Move SSL Certificates
 
